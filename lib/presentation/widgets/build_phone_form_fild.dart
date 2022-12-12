@@ -25,15 +25,16 @@ class BuildPhoneFormFild extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.w , vertical: 14.h),
             decoration: BoxDecoration(
               border: Border.all(color: MyColors.lightGrey),
               borderRadius: BorderRadius.all(Radius.circular(6)),
             ),
-            child: Text(generateCountryFlag() +' +20',
-            style: TextStyle(
+            child: Center(
+              child: Text(generateCountryFlag() +' +20',
+              style: TextStyle(
           fontSize: 18.sp,
           letterSpacing: 2
+                ),
               ),
             ),
           ),
