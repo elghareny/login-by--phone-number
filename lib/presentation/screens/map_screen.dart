@@ -6,9 +6,13 @@ import 'package:flutter_maps/business_logic/cubit/phone_auth/phone_cubit.dart';
 import 'package:flutter_maps/constnats/colors.dart';
 import 'package:flutter_maps/constnats/strings.dart';
 import 'package:flutter_maps/helpers/location_helper.dart';
+import 'package:flutter_maps/presentation/widgets/build_map.dart';
 import 'package:flutter_maps/presentation/widgets/build_next_button.dart';
+import 'package:flutter_maps/presentation/widgets/build_search.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 
 class MapScreen extends StatefulWidget {
@@ -20,70 +24,48 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
 
-  @override
+   PhoneCubit? phoneCubit = PhoneCubit();
+   @override
   void initState() {
     super.initState();
     getCurrentLocation();
   }
 
-   PhoneCubit? phoneCubit = PhoneCubit();
-
-   Completer <GoogleMapController> _controller = Completer();
-
-   static Position? position;
-
-   static CameraPosition _myCameraPosition = CameraPosition(
-    target: LatLng(position!.latitude,position!.longitude),
-    bearing: 0.0,
-    tilt: 0.0,
-    zoom: 17,
-    );
-
-   Future <void> getCurrentLocation()async
+Future <void> getCurrentLocation()async
    {
-    position = await LocationHelper.getCurrentLocation().whenComplete(() 
+    BuildMap.position = await LocationHelper.getCurrentLocation().whenComplete(() 
     {
       setState(() { });
     });
    }
 
-
    Future <void> _goToMyLocation ()async
    {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_myCameraPosition));
+    final GoogleMapController controller = await BuildMap.mapController.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(BuildMap.myCameraPosition));
    }
 
-   Widget buildMap ()
-   {
-    return GoogleMap(
-      initialCameraPosition: _myCameraPosition,
-      mapType: MapType.normal,
-      myLocationEnabled: true,
-      zoomControlsEnabled: false,
-      myLocationButtonEnabled: false,
-      onMapCreated: (GoogleMapController controller)
-      {
-        _controller.complete(controller);
-      },
-    );
-   }
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          position != null ? buildMap() : 
-          Center(
-            child: CircularProgressIndicator(color: MyColors.blue,),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _goToMyLocation,
-        backgroundColor: MyColors.blue,
-        child: Icon(Icons.place, color: Colors.white,),
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            BuildMap.position != null ? BuildMap() : 
+            Center(
+              child: CircularProgressIndicator(color: MyColors.blue,),
+            ),
+            BuildSearch(),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _goToMyLocation,
+          backgroundColor: MyColors.blue,
+          child: Icon(Icons.place, color: Colors.white,),
+        ),
       ),
     );
   }
