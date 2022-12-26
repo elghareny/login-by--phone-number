@@ -64,6 +64,7 @@ class LoginScreen extends StatelessWidget {
             duration: Duration(seconds: 3),
             ),
         );
+        print(' الايرورررررررررررررر'+(state).error.toString());
       }
     },
     child: Container(),

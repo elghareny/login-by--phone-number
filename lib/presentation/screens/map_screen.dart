@@ -9,6 +9,7 @@ import 'package:flutter_maps/helpers/location_helper.dart';
 import 'package:flutter_maps/presentation/widgets/build_map.dart';
 import 'package:flutter_maps/presentation/widgets/build_next_button.dart';
 import 'package:flutter_maps/presentation/widgets/build_search.dart';
+import 'package:flutter_maps/presentation/widgets/my_drawer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -51,6 +52,7 @@ Future <void> getCurrentLocation()async
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: MyDrawer(),
         body: Stack(
           fit: StackFit.expand,
           children: [

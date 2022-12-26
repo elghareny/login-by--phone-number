@@ -32,7 +32,7 @@ void verificationCompleted(PhoneAuthCredential credential)async
 
 void verificationFailed(FirebaseAuthException error)async
 {
-   print('verificationFailed${error.toString()}');
+   print(' الايروررررررررررررررررررررر verificationFailed${error.toString()}');
   emit(Error(error: error.toString()));
 }
 
